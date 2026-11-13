@@ -2,11 +2,12 @@ import type { HTMLAttributes } from 'react'
 import { classNames } from './classNames'
 
 type CardPadding = 'none' | 'sm' | 'md' | 'lg'
+/** default = borda cinza, brand = borda verde com brilho, white = borda branca (alertas) */
+type CardTone = 'default' | 'brand' | 'white'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   padding?: CardPadding
-  /** Borda verde para destacar o cartão principal da tela */
-  highlighted?: boolean
+  tone?: CardTone
 }
 
 const paddings: Record<CardPadding, string> = {
@@ -16,18 +17,18 @@ const paddings: Record<CardPadding, string> = {
   lg: 'p-6 sm:p-8',
 }
 
-export function Card({
-  padding = 'md',
-  highlighted = false,
-  className,
-  children,
-  ...rest
-}: CardProps) {
+const tones: Record<CardTone, string> = {
+  default: 'border-border',
+  brand: 'border-brand shadow-glow-soft',
+  white: 'border-foreground',
+}
+
+export function Card({ padding = 'md', tone = 'default', className, children, ...rest }: CardProps) {
   return (
     <div
       className={classNames(
-        'rounded-card border bg-surface',
-        highlighted ? 'border-brand/60 shadow-glow' : 'border-border',
+        'rounded-card border bg-linear-to-b from-surface-raised to-surface',
+        tones[tone],
         paddings[padding],
         className,
       )}

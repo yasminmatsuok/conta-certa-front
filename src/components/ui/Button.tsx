@@ -5,7 +5,7 @@ type ButtonVariant = 'primary' | 'white' | 'outline'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** primary = verde, white = branco, outline = contorno */
+  /** primary = verde, white = branco, outline = contorno verde */
   variant?: ButtonVariant
   size?: ButtonSize
   fullWidth?: boolean
@@ -14,16 +14,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-brand text-on-brand hover:bg-brand-hover',
-  white: 'bg-foreground text-background hover:bg-foreground/85',
-  outline:
-    'border border-border-strong bg-transparent text-foreground hover:border-brand hover:text-brand',
+  primary:
+    'bg-linear-to-b from-brand-light to-brand-dark text-on-brand shadow-glow hover:brightness-110',
+  white: 'bg-linear-to-b from-white to-neutral-200 text-background hover:brightness-90',
+  outline: 'border border-brand bg-transparent text-brand hover:bg-brand-muted',
 }
 
 const sizes: Record<ButtonSize, string> = {
-  sm: 'h-9 px-4 text-sm',
-  md: 'h-11 px-5 text-sm',
-  lg: 'h-13 px-6 text-base',
+  sm: 'h-10 px-4 text-sm',
+  md: 'h-12 px-5 text-base',
+  lg: 'h-14 px-6 text-base',
 }
 
 export function Button({
@@ -41,7 +41,7 @@ export function Button({
     <button
       type={type}
       className={classNames(
-        'inline-flex cursor-pointer items-center justify-center gap-2 rounded-pill font-semibold transition-colors',
+        'inline-flex cursor-pointer items-center justify-center gap-2 rounded-control font-bold transition',
         'disabled:cursor-not-allowed disabled:opacity-50',
         variants[variant],
         sizes[size],
