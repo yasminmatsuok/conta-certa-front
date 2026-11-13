@@ -1,32 +1,30 @@
 import type { ReactNode } from 'react'
 import { classNames } from './classNames'
 
-type BadgeTone = 'brand' | 'neutral' | 'warning' | 'danger'
+/** brand = "Em dia", white = "Juros altos", outline = "Atenção" */
+type BadgeTone = 'brand' | 'white' | 'outline'
 
 interface BadgeProps {
   tone?: BadgeTone
-  icon?: ReactNode
   className?: string
   children: ReactNode
 }
 
 const tones: Record<BadgeTone, string> = {
-  brand: 'bg-brand-muted text-brand',
-  neutral: 'bg-surface-raised text-muted',
-  warning: 'bg-warning-muted text-warning',
-  danger: 'bg-danger-muted text-danger',
+  brand: 'border-brand bg-brand text-on-brand',
+  white: 'border-foreground bg-foreground text-background',
+  outline: 'border-foreground bg-transparent text-foreground',
 }
 
-export function Badge({ tone = 'brand', icon, className, children }: BadgeProps) {
+export function Badge({ tone = 'brand', className, children }: BadgeProps) {
   return (
     <span
       className={classNames(
-        'inline-flex items-center gap-1 rounded-pill px-2.5 py-1 text-xs font-semibold',
+        'inline-flex items-center rounded-badge border px-2 py-0.5 text-xs font-bold whitespace-nowrap',
         tones[tone],
         className,
       )}
     >
-      {icon}
       {children}
     </span>
   )
