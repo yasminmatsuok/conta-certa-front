@@ -39,9 +39,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link to={PATHS.login} className={buttonClasses({ size: 'sm' })}>
-            Entrar
-          </Link>
+          {/* Na própria tela de entrar o botão não faz sentido */}
+          {pathname !== PATHS.login && (
+            <Link to={PATHS.login} className={buttonClasses({ size: 'sm' })}>
+              Entrar
+            </Link>
+          )}
           <button
             type="button"
             aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
