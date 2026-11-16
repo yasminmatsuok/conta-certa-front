@@ -77,12 +77,13 @@ async function request<TResponse>(
     throw new ApiError(response.status, await readErrorMessage(response))
   }
 
-  // 204 No Content: não há corpo para ler
-  if (response.status === 204) {
+  // Respostas sem corpo (204, ou 200 vazio) não têm JSON para ler
+  const text = await response.text()
+  if (text === '') {
     return undefined as TResponse
   }
 
-  return (await response.json()) as TResponse
+  return JSON.parse(text) as TResponse
 }
 
 export const api = {

@@ -63,7 +63,7 @@ export function LoginPage() {
     <main className="grid min-h-dvh place-items-center px-4 py-10 md:px-8">
       <div className="grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
         <section>
-          <Logo linked={false} />
+          <Logo to={PATHS.site} />
 
           <h1 className="mt-8 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             Organize seu dinheiro.
