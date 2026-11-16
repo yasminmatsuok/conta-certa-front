@@ -1,6 +1,9 @@
-import { NavLink } from 'react-router-dom'
+import { Globe } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
 import { NAV_ITEMS, PATHS } from '../../routes/paths'
 import { classNames } from '../ui/classNames'
+
+const itemClasses = 'flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors'
 
 /** Barra de navegação inferior: aparece só no mobile (abaixo do breakpoint md) */
 export function BottomNav() {
@@ -16,10 +19,7 @@ export function BottomNav() {
               to={path}
               end={path === PATHS.home}
               className={({ isActive }) =>
-                classNames(
-                  'flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors',
-                  isActive ? 'text-brand' : 'text-muted hover:text-foreground',
-                )
+                classNames(itemClasses, isActive ? 'text-brand' : 'text-muted hover:text-foreground')
               }
             >
               <Icon size={22} aria-hidden="true" />
@@ -27,6 +27,18 @@ export function BottomNav() {
             </NavLink>
           </li>
         ))}
+
+        {/* Saída do app para o site público; rótulo curto para caber na barra */}
+        <li className="min-w-0 flex-1 border-l border-border">
+          <Link
+            to={PATHS.site}
+            aria-label="Voltar ao site"
+            className={classNames(itemClasses, 'text-muted hover:text-foreground')}
+          >
+            <Globe size={22} aria-hidden="true" />
+            <span className="max-w-full truncate px-1">Site</span>
+          </Link>
+        </li>
       </ul>
     </nav>
   )
