@@ -29,11 +29,10 @@ export function AppRoutes() {
           <Route path={PATHS.about} element={<AboutPage />} />
           <Route path={PATHS.faq} element={<FaqPage />} />
           <Route path={PATHS.contact} element={<ContactPage />} />
+          <Route path={PATHS.login} element={<LoginPage />} />
           {/* Qualquer endereço desconhecido cai na página 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-        <Route path={PATHS.login} element={<LoginPage />} />
 
         {/* App (a solução) */}
         <Route path="/app" element={<AppLayout />}>

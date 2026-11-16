@@ -1,6 +1,6 @@
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { PATHS, SITE_NAV_ITEMS } from '../../routes/paths'
 import { buttonClasses } from '../ui/buttonStyles'
 import { classNames } from '../ui/classNames'
@@ -8,8 +8,12 @@ import { Logo } from '../layout/Logo'
 
 /** Cabeçalho do site público: menu no desktop, hambúrguer no mobile */
 export function SiteHeader() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const closeMenu = () => setMenuOpen(false)
+  const { pathname } = useLocation()
+  // Guarda em qual página o menu mobile foi aberto: ao trocar de página
+  // (por qualquer link, inclusive a logo e o botão Entrar) ele fecha sozinho.
+  const [openedAt, setOpenedAt] = useState<string | null>(null)
+  const menuOpen = openedAt === pathname
+  const closeMenu = () => setOpenedAt(null)
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
@@ -43,7 +47,7 @@ export function SiteHeader() {
             aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={menuOpen}
             aria-controls="site-menu-mobile"
-            onClick={() => setMenuOpen((open) => !open)}
+            onClick={() => setOpenedAt(menuOpen ? null : pathname)}
             className="grid size-10 cursor-pointer place-items-center rounded-control border border-border-strong lg:hidden"
           >
             {menuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
