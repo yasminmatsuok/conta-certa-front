@@ -4,6 +4,7 @@ import { DebtDetailPage } from '../pages/DebtDetailPage'
 import { DebtsPage } from '../pages/DebtsPage'
 import { HomePage } from '../pages/HomePage'
 import { LearnPage } from '../pages/LearnPage'
+import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { PlanPage } from '../pages/PlanPage'
 import { TransactionsPage } from '../pages/TransactionsPage'
@@ -13,8 +14,7 @@ export function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Ainda não há tela de entrada: a raiz leva direto para o app */}
-        <Route path="/" element={<Navigate to={PATHS.home} replace />} />
+        <Route path={PATHS.login} element={<LoginPage />} />
 
         <Route path="/app" element={<AppLayout />}>
           <Route index element={<HomePage />} />
@@ -26,7 +26,7 @@ export function AppRoutes() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 
-        <Route path="*" element={<Navigate to={PATHS.home} replace />} />
+        <Route path="*" element={<Navigate to={PATHS.login} replace />} />
       </Routes>
     </BrowserRouter>
   )

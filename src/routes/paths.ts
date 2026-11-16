@@ -2,6 +2,7 @@ import { Calculator, House, SlidersHorizontal, Star, Target } from 'lucide-react
 import type { NavItem } from '../types/navigation'
 
 export const PATHS = {
+  login: '/',
   home: '/app',
   transactions: '/app/transacoes',
   debts: '/app/dividas',

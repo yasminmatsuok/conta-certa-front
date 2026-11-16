@@ -2,7 +2,9 @@
  * Cliente HTTP do app, feito só com a Fetch API (sem Axios).
  * A URL base vem de VITE_API_URL, definida no arquivo .env (veja .env.example).
  */
-const BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8080').replace(/\/+$/, '')
+import { getSession } from './session'
+
+const BASE_URL =(import.meta.env.VITE_API_URL ?? 'http://localhost:8080').replace(/\/+$/, '')
 
 export class ApiError extends Error {
   /** Status HTTP da resposta; 0 quando a API nem respondeu (fora do ar, sem rede, CORS) */
@@ -52,6 +54,8 @@ async function request<TResponse>(
   { body, signal }: RequestOptions = {},
 ): Promise<TResponse> {
   let response: Response
+  // Depois do login, o token vai em todas as requisições
+  const token = getSession()?.token
 
   try {
     response = await fetch(`${BASE_URL}${path}`, {
@@ -59,6 +63,7 @@ async function request<TResponse>(
       signal,
       headers: {
         Accept: 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
       },
       body: body === undefined ? undefined : JSON.stringify(body),

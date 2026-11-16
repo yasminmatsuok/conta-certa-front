@@ -44,6 +44,7 @@ src/
 
 | Rota | Tela |
 | --- | --- |
+| `/` | Entrar |
 | `/app` | Início |
 | `/app/transacoes` | Transações |
 | `/app/dividas` | Minhas dívidas |

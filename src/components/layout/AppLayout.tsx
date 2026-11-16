@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import { getSession } from '../../services/session'
 import { BottomNav } from './BottomNav'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
@@ -7,8 +8,8 @@ import { Sidebar } from './Sidebar'
 export function AppLayout() {
   return (
     <div className="flex min-h-dvh flex-col">
-      {/* TODO: trocar pelo nome do usuário logado quando houver autenticação */}
-      <Header userName="Visitante" hasNotifications />
+      {/* Nome de quem entrou pela tela de login; "Visitante" se abrir o app direto */}
+      <Header userName={getSession()?.userName ?? 'Visitante'} hasNotifications />
 
       <div className="flex flex-1">
         <Sidebar />
