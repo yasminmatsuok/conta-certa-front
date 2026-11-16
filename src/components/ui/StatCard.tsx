@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Card } from './Card'
+import type { CardTone } from './Card'
 import { classNames } from './classNames'
 
 /**
@@ -15,6 +16,8 @@ interface StatCardProps {
   value: string
   icon: ReactNode
   variant?: StatVariant
+  /** Força a borda do cartão, ex.: branca para chamar atenção */
+  cardTone?: CardTone
   className?: string
 }
 
@@ -24,9 +27,16 @@ const iconStyles: Record<StatVariant, string> = {
   white: 'bg-foreground text-background',
 }
 
-export function StatCard({ label, value, icon, variant = 'outline', className }: StatCardProps) {
+export function StatCard({
+  label,
+  value,
+  icon,
+  variant = 'outline',
+  cardTone,
+  className,
+}: StatCardProps) {
   return (
-    <Card tone={variant === 'brand' ? 'brand' : 'default'} className={className}>
+    <Card tone={cardTone ?? (variant === 'brand' ? 'brand' : 'default')} className={className}>
       <div className="flex items-center gap-4">
         <span
           className={classNames(

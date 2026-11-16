@@ -3,7 +3,7 @@ import { classNames } from './classNames'
 
 type CardPadding = 'none' | 'sm' | 'md' | 'lg'
 /** default = borda cinza, brand = borda verde com brilho, white = borda branca (alertas) */
-type CardTone = 'default' | 'brand' | 'white'
+export type CardTone = 'default' | 'brand' | 'white'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   padding?: CardPadding

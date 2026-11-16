@@ -9,6 +9,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   leftIcon?: ReactNode
   /** Elemento à direita, ex.: botão de mostrar a senha */
   rightSlot?: ReactNode
+  /** Classes extras só para o campo, ex.: "text-xl font-bold" */
+  inputClassName?: string
 }
 
 export function Input({
@@ -17,6 +19,7 @@ export function Input({
   error,
   leftIcon,
   rightSlot,
+  inputClassName,
   id,
   className,
   ...rest
@@ -47,6 +50,7 @@ export function Input({
             leftIcon ? 'pl-12' : undefined,
             rightSlot ? 'pr-12' : undefined,
             error ? 'border-danger' : 'border-border-strong focus:border-brand',
+            inputClassName,
           )}
           {...rest}
         />

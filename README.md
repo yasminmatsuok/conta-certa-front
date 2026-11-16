@@ -14,6 +14,7 @@ Sem biblioteca de UI, sem biblioteca de requisição e sem biblioteca de gráfic
 
 ```bash
 npm install
+cp .env.example .env   # e ajuste VITE_API_URL para a URL da API Java
 npm run dev
 ```
 
@@ -33,6 +34,19 @@ src/
   components/   componentes reutilizáveis (ui/) e layout do app (layout/)
   pages/        uma página por rota
   routes/       definição das rotas e itens de navegação
-  services/     acesso à API (fetch nativo)
-  types/        tipos TypeScript compartilhados
+  services/     acesso à API (fetch nativo); toda leitura e escrita de dados passa por aqui
+  types/        interfaces TypeScript dos dados da API
+  hooks/        useAsync: estados de carregando, erro e sucesso das buscas
+  utils/        formatação de moeda, datas e porcentagem
 ```
+
+## Páginas
+
+| Rota | Tela |
+| --- | --- |
+| `/app` | Início |
+| `/app/transacoes` | Transações |
+| `/app/dividas` | Minhas dívidas |
+| `/app/dividas/:id` | Detalhe da dívida |
+| `/app/plano` | Meu plano |
+| `/app/aprender` | Aprender |

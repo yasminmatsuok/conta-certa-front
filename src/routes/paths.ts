@@ -2,11 +2,13 @@ import { Calculator, House, SlidersHorizontal, Star, Target } from 'lucide-react
 import type { NavItem } from '../types/navigation'
 
 export const PATHS = {
-  home: '/',
-  transactions: '/transacoes',
-  debts: '/dividas',
-  plan: '/plano',
-  learn: '/aprender',
+  home: '/app',
+  transactions: '/app/transacoes',
+  debts: '/app/dividas',
+  /** Rota com parâmetro: /app/dividas/:id */
+  debtDetail: (id: number | string) => `/app/dividas/${id}`,
+  plan: '/app/plano',
+  learn: '/app/aprender',
 } as const
 
 /** Itens do menu (lateral no desktop, barra inferior no mobile) */
