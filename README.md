@@ -1,60 +1,121 @@
-# Conta Certa (front-end)
+# Conta Certa
 
-Front-end do **Conta Certa**, app de controle financeiro e saída das dívidas (Global Solution FIAP).
+Aplicação web de controle financeiro e plano para sair das dívidas, desenvolvida para a **Global Solution 2026/2 · CitizenTech** da FIAP (Front-End Design Engineering).
+
+## Objetivo
+
+Ajudar o cidadão a entender para onde vai o seu dinheiro e a deixar de pagar juros abusivos. O Conta Certa permite:
+
+- registrar entradas e saídas e ver o saldo ao longo do mês;
+- cadastrar dívidas e comparar a taxa de juros com a média do mercado;
+- montar um plano de pagamento (métodos avalanche e bola de neve);
+- aprender conceitos de educação financeira em trilhas curtas.
+
+**ODS relacionado:** [PREENCHER: número e nome do ODS escolhido pelo grupo, ex.: ODS 10 – Redução das Desigualdades]
+
+## Links
+
+| Item | Link |
+| --- | --- |
+| Site publicado (Vercel) | https://conta-certa-front-eta.vercel.app/ |
+| Repositório (GitHub) | https://github.com/yasminmatsuok/conta-certa-front |
+| API Java (Render) | [PREENCHER: URL da API] |
+| Vídeo (YouTube, até 3 min) | [PREENCHER: link do vídeo] |
 
 ## Tecnologias
 
-- React + Vite + TypeScript
-- Tailwind CSS (tema em `src/index.css`)
-- react-router-dom (rotas) e lucide-react (ícones)
-
-Sem biblioteca de UI, sem biblioteca de requisição e sem biblioteca de gráficos (gráficos em SVG feito à mão).
-
-## Como rodar
-
-```bash
-npm install
-cp .env.example .env   # e ajuste VITE_API_URL para a URL da API Java
-npm run dev
-```
-
-Abra o endereço que aparecer no terminal (por padrão http://localhost:5173).
-
-Outros comandos:
-
-```bash
-npm run build    # checa os tipos e gera a versão de produção em dist/
-npm run preview  # serve a versão de produção localmente
-```
-
-## Estrutura
-
-```
-src/
-  components/   componentes reutilizáveis (ui/) e layout do app (layout/)
-  pages/        uma página por rota
-  routes/       definição das rotas e itens de navegação
-  services/     acesso à API (fetch nativo); toda leitura e escrita de dados passa por aqui
-  types/        interfaces TypeScript dos dados da API
-  data/         conteúdo fixo do site público: integrantes, textos do Sobre e perguntas do FAQ
-  hooks/        useAsync: estados de carregando, erro e sucesso das buscas
-  utils/        formatação de moeda, datas e porcentagem
-```
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+- React Router
+- Fetch API (sem Axios ou outras bibliotecas de requisição)
+- Deploy na Vercel
 
 ## Páginas
 
-| Rota | Tela |
+**Institucionais**
+
+| Rota | Descrição |
 | --- | --- |
-| `/` | Home (site público) |
-| `/integrantes` | Integrantes |
-| `/integrantes/:rm` | Detalhe do integrante |
-| `/sobre` | Sobre |
+| `/` | Home |
+| `/integrantes` | Lista de integrantes |
+| `/integrantes/:rm` | Detalhe do integrante (rota com parâmetro) |
+| `/sobre` | Problema, solução e ODS |
 | `/faq` | Perguntas frequentes |
-| `/contato` | Contato |
-| `/entrar` | Entrar |
-| `/app` | Início |
-| `/app/transacoes` | Transações |
+| `/contato` | Formulário de contato |
+| `/entrar` | Login |
+
+**Solução**
+
+| Rota | Descrição |
+| --- | --- |
+| `/app` | Início: resumo financeiro e gráfico de saldo |
+| `/app/transacoes` | Lista de transações e formulário de nova transação |
 | `/app/dividas` | Minhas dívidas |
-| `/app/dividas/:id` | Detalhe da dívida |
-| `/app/plano` | Meu plano |
-| `/app/aprender` | Aprender |
+| `/app/dividas/:id` | Detalhe da dívida (rota com parâmetro) |
+| `/app/plano` | Plano de pagamento |
+| `/app/aprender` | Trilhas de aprendizado |
+
+## Estrutura de pastas
+
+```
+src/
+├── components/   componentes reutilizáveis
+├── pages/        páginas da aplicação
+├── services/     chamadas à API com Fetch
+├── types/        interfaces TypeScript
+├── data/         dados estáticos (integrantes, Sobre, FAQ)
+├── hooks/        hooks personalizados
+└── routes/       configuração de rotas
+```
+
+## Como executar
+
+Pré-requisito: [Node.js](https://nodejs.org/) 18 ou superior.
+
+```bash
+# 1. clonar o repositório
+git clone https://github.com/yasminmatsuok/conta-certa-front.git
+cd conta-certa-front
+
+# 2. instalar as dependências
+npm install
+
+# 3. configurar a URL da API
+cp .env.example .env
+# edite o .env e preencha VITE_API_URL com a URL da API Java
+
+# 4. rodar em desenvolvimento
+npm run dev
+```
+
+A aplicação abre em `http://localhost:5173`.
+
+Para gerar a versão de produção: `npm run build`.
+
+## Integração com a API
+
+Todas as chamadas HTTP ficam em `src/services` e usam a Fetch API. A URL base vem da variável `VITE_API_URL`. O contrato esperado dos endpoints está descrito em [`ENDPOINTS.md`](./ENDPOINTS.md).
+
+Na Vercel, a variável `VITE_API_URL` é configurada em Settings > Environment Variables.
+
+## Responsividade
+
+Testada nas resoluções de mobile (390 × 844), tablet (768 × 1024) e desktop (1440 × 900).
+
+## Integrantes
+
+| Nome | RM | Turma | GitHub |
+| --- | --- | --- | --- |
+| Yasmin de Oliveira Matsuok | 573083 |1TDSPI | [@yasminmatsuok](https://github.com/yasminmatsuok) |
+| Vinicius Soares Loureiro  | [PREENCHER] | 1TDSPY | [PREENCHER] |
+| Maria Vitória Cândida Carvalho| 570850 | 1TDSPI | [PREENCHER] |
+
+## Contato
+
+yasminomatsuok@gmail.com
+
+---
+
+Projeto acadêmico · FIAP · Global Solution 2026/2
