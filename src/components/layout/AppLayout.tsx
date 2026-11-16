@@ -18,11 +18,7 @@ export function AppLayout() {
   return (
     <div className="flex min-h-dvh flex-col">
       {/* Nome de quem entrou pela tela de login; "Visitante" se abrir o app direto */}
-      <Header
-        userName={getSession()?.userName ?? 'Visitante'}
-        hasNotifications
-        onLogout={handleLogout}
-      />
+      <Header userName={getSession()?.userName ?? 'Visitante'} onLogout={handleLogout} />
 
       <div className="flex flex-1">
         <Sidebar />
