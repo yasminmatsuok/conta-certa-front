@@ -36,6 +36,7 @@ src/
   routes/       definição das rotas e itens de navegação
   services/     acesso à API (fetch nativo); toda leitura e escrita de dados passa por aqui
   types/        interfaces TypeScript dos dados da API
+  data/         conteúdo fixo do site público: integrantes, textos do Sobre e perguntas do FAQ
   hooks/        useAsync: estados de carregando, erro e sucesso das buscas
   utils/        formatação de moeda, datas e porcentagem
 ```
@@ -44,7 +45,13 @@ src/
 
 | Rota | Tela |
 | --- | --- |
-| `/` | Entrar |
+| `/` | Home (site público) |
+| `/integrantes` | Integrantes |
+| `/integrantes/:rm` | Detalhe do integrante |
+| `/sobre` | Sobre |
+| `/faq` | Perguntas frequentes |
+| `/contato` | Contato |
+| `/entrar` | Entrar |
 | `/app` | Início |
 | `/app/transacoes` | Transações |
 | `/app/dividas` | Minhas dívidas |

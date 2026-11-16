@@ -21,7 +21,8 @@ interfaces em `src/types`; as chamadas estão em `src/services`. Se a API usar o
 
 | Método | Caminho | Tela | Para quê |
 | --- | --- | --- | --- |
-| POST | `/auth/login` | Entrar (`/`) | Entrar com e-mail e senha |
+| POST | `/contact` | Contato (`/contato`) | Enviar mensagem do formulário de contato |
+| POST | `/auth/login` | Entrar (`/entrar`) | Entrar com e-mail e senha |
 | GET | `/dashboard?month=AAAA-MM` | Início (`/app`) | Resumo do mês |
 | GET | `/transactions?month=AAAA-MM` | Transações (`/app/transacoes`) | Listar transações do mês |
 | POST | `/transactions` | Transações | Criar transação |
@@ -32,6 +33,28 @@ interfaces em `src/types`; as chamadas estão em `src/services`. Se a API usar o
 | PUT | `/plan` | Meu plano | Salvar valor mensal e método |
 | GET | `/learning/tracks` | Aprender (`/app/aprender`) | Listar trilhas e lições |
 | POST | `/learning/tracks/{trackId}/lessons/{lessonId}/complete` | Aprender | Concluir lição |
+
+---
+
+## Contato (site público)
+
+### `POST /contact`
+
+Chamado sem login (sem cabeçalho `Authorization`, a não ser que a pessoa já tenha entrado).
+
+Corpo enviado:
+
+| Campo | Tipo | Observação |
+| --- | --- | --- |
+| `name` | string | 2 a 80 caracteres (o front já valida) |
+| `email` | string | Formato de e-mail (o front já valida) |
+| `message` | string | 10 a 1000 caracteres (o front já valida) |
+
+Resposta: qualquer 2xx, com ou sem corpo (o front não lê o corpo). Depois disso a tela mostra
+"Mensagem enviada!".
+
+As outras páginas do site público (Home, Integrantes, Sobre e FAQ) não chamam a API: os textos e
+os dados dos integrantes ficam em `src/data`.
 
 ---
 
