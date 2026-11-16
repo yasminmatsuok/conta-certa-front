@@ -53,7 +53,9 @@ Ajudar o cidadão a entender para onde vai o seu dinheiro e a deixar de pagar ju
 | `/app` | Início: resumo financeiro e gráfico de saldo |
 | `/app/transacoes` | Lista de transações e formulário de nova transação |
 | `/app/dividas` | Minhas dívidas |
+| `/app/dividas/nova` | Cadastro de dívida |
 | `/app/dividas/:id` | Detalhe da dívida (rota com parâmetro) |
+| `/app/dividas/:id/editar` | Edição de dívida |
 | `/app/plano` | Plano de pagamento |
 | `/app/aprender` | Trilhas de aprendizado |
 

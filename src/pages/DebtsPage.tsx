@@ -3,7 +3,8 @@ import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { getDebtStatusMeta } from '../components/debts/debtStatus'
 import { PageHeader } from '../components/layout/PageHeader'
-import { Badge, Button, Card, EmptyState, ErrorState, LoadingState, StatCard } from '../components/ui'
+import { Badge, Card, EmptyState, ErrorState, LoadingState, StatCard } from '../components/ui'
+import { buttonClasses } from '../components/ui/buttonStyles'
 import { useAsync } from '../hooks/useAsync'
 import { PATHS } from '../routes/paths'
 import { listDebts } from '../services/debtService'
@@ -24,10 +25,9 @@ export function DebtsPage() {
         title="Minhas dívidas"
         description="Veja quanto você deve e quais dívidas estão caras."
         actions={
-          // O protótipo ainda não tem a tela de cadastro de dívida
-          <Button disabled title="Cadastro de dívida ainda não disponível">
+          <Link to={PATHS.debtNew} className={buttonClasses()}>
             + Cadastrar dívida
-          </Button>
+          </Link>
         }
       />
 
@@ -38,6 +38,11 @@ export function DebtsPage() {
           <EmptyState
             title="Nenhuma dívida cadastrada"
             description="Quando você cadastrar uma dívida, ela aparece aqui com a taxa de juros comparada à média."
+            action={
+              <Link to={PATHS.debtNew} className={buttonClasses({ size: 'sm' })}>
+                Cadastrar a primeira dívida
+              </Link>
+            }
           />
         ) : (
           <DebtList debts={state.data} />

@@ -1,6 +1,6 @@
 import { Info, RefreshCw, Star, Target, TriangleAlert } from 'lucide-react'
 import { useCallback, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { PageHeader } from '../components/layout/PageHeader'
 import { Button, Card, ErrorState, FormMessage, LoadingState, ProgressBar } from '../components/ui'
 import { buttonClasses } from '../components/ui/buttonStyles'
@@ -44,6 +44,16 @@ interface DebtDetailContentProps {
 
 function DebtDetailContent({ debt }: DebtDetailContentProps) {
   const navigate = useNavigate()
+  const location = useLocation()
+  // "Dívida cadastrada!" / "Dívida atualizada!", enviado pelo formulário ao navegar para cá
+  const navigationState: unknown = location.state
+  const flash =
+    typeof navigationState === 'object' &&
+    navigationState !== null &&
+    'flash' in navigationState &&
+    typeof navigationState.flash === 'string'
+      ? navigationState.flash
+      : null
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
@@ -82,12 +92,18 @@ function DebtDetailContent({ debt }: DebtDetailContentProps) {
         title={debt.name}
         description={debt.type}
         actions={
-          // O protótipo ainda não tem a tela de edição de dívida
-          <Button variant="neutral" size="sm" disabled title="Edição de dívida ainda não disponível">
+          <Link to={PATHS.debtEdit(debt.id)} className={buttonClasses({ variant: 'neutral', size: 'sm' })}>
             Editar
-          </Button>
+          </Link>
         }
       />
+
+      {/* Aviso vindo do formulário de cadastro ou edição */}
+      {flash && (
+        <FormMessage kind="success" className="mb-5">
+          {flash}
+        </FormMessage>
+      )}
 
       <div className="grid items-start gap-5 xl:grid-cols-3">
         <div className="space-y-5 xl:col-span-2">

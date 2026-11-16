@@ -4,6 +4,7 @@ import { SiteLayout } from '../components/site/SiteLayout'
 import { AboutPage } from '../pages/AboutPage'
 import { ContactPage } from '../pages/ContactPage'
 import { DebtDetailPage } from '../pages/DebtDetailPage'
+import { DebtEditPage, DebtNewPage } from '../pages/DebtFormPage'
 import { DebtsPage } from '../pages/DebtsPage'
 import { FaqPage } from '../pages/FaqPage'
 import { HomePage } from '../pages/HomePage'
@@ -39,7 +40,9 @@ export function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route path="transacoes" element={<TransactionsPage />} />
           <Route path="dividas" element={<DebtsPage />} />
+          <Route path="dividas/nova" element={<DebtNewPage />} />
           <Route path="dividas/:id" element={<DebtDetailPage />} />
+          <Route path="dividas/:id/editar" element={<DebtEditPage />} />
           <Route path="plano" element={<PlanPage />} />
           <Route path="aprender" element={<LearnPage />} />
           <Route path="*" element={<NotFoundPage backTo={PATHS.home} backLabel="Voltar para o início" />} />

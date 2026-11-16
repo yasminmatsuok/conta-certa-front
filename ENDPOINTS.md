@@ -27,7 +27,9 @@ interfaces em `src/types`; as chamadas estão em `src/services`. Se a API usar o
 | GET | `/transactions?month=AAAA-MM` | Transações (`/app/transacoes`) | Listar transações do mês |
 | POST | `/transactions` | Transações | Criar transação |
 | GET | `/debts` | Minhas dívidas (`/app/dividas`) | Listar dívidas |
+| POST | `/debts` | Cadastrar dívida (`/app/dividas/nova`) | Criar dívida |
 | GET | `/debts/{id}` | Detalhe da dívida (`/app/dividas/:id`) | Uma dívida com histórico |
+| PUT | `/debts/{id}` | Editar dívida (`/app/dividas/:id/editar`) | Atualizar dívida |
 | DELETE | `/debts/{id}` | Detalhe da dívida | Excluir dívida |
 | GET | `/plan` | Meu plano (`/app/plano`) | Plano atual |
 | PUT | `/plan` | Meu plano | Salvar valor mensal e método |
@@ -182,6 +184,39 @@ a partir dessa lista; "juros acima da média" conta as dívidas com `status` igu
 
 ---
 
+## Cadastrar e editar dívida
+
+### `POST /debts` e `PUT /debts/{id}`
+
+Os dois recebem o mesmo corpo. A tela de edição carrega os dados atuais com `GET /debts/{id}`.
+
+| Campo | Tipo | Observação |
+| --- | --- | --- |
+| `name` | string | 2 a 60 caracteres |
+| `type` | string | Tipo de crédito escolhido numa lista (abaixo) |
+| `creditor` | string | 2 a 60 caracteres |
+| `balance` | número | Maior que zero |
+| `monthlyRate` | número | % ao mês, de 0 a 100 |
+| `minimumPayment` | número | Zero ou mais |
+| `nextDueDate` | data | |
+| `installmentsPaid` | número ou `null` | Inteiro; `null` quando não é parcelada |
+| `installmentsTotal` | número ou `null` | Inteiro, pelo menos 1 e não menor que as pagas; `null` quando não é parcelada |
+
+O front já valida tudo isso antes de enviar.
+
+Valores de `type` oferecidos no formulário: "Rotativo do cartão", "Fatura parcelada",
+"Cheque especial", "Empréstimo pessoal", "Empréstimo consignado", "Crediário de loja",
+"Financiamento" e "Outro". A lista fica em `src/components/debts/DebtForm.tsx`; se a API
+preferir códigos ou outros nomes, é lá que se ajusta.
+
+O front **não envia** `marketRate` nem `status`: a API calcula os dois (a média do mercado a
+partir de `type`, e o status a partir da comparação com `monthlyRate`).
+
+Resposta (200 ou 201): a dívida salva, no formato de um item do `GET /debts`, com `id`,
+`marketRate` e `status`. O front usa o `id` para abrir a tela de detalhe em seguida.
+
+---
+
 ## Detalhe da dívida
 
 ### `GET /debts/{id}`
@@ -281,11 +316,9 @@ Resposta (200): a trilha atualizada, no mesmo formato de um item do `GET /learni
 
 ## Ainda sem endpoint
 
-Estas ações aparecem no protótipo, mas não têm tela desenhada; os botões estão desabilitados no
-front e nenhum endpoint é chamado:
+Estas ações aparecem no protótipo, mas não têm tela desenhada, e nenhum endpoint é chamado
+(os dois primeiros botões estão desabilitados no front):
 
 - Criar conta ("Criar conta grátis")
 - Recuperar senha ("Esqueci minha senha")
-- Cadastrar dívida ("+ Cadastrar dívida")
-- Editar dívida ("Editar")
-- Notificações (sino do cabeçalho)
+- Notificações: o sino do cabeçalho abre um painel que hoje mostra sempre "Nenhuma notificação"

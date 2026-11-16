@@ -18,6 +18,8 @@ export const PATHS = {
   debts: '/app/dividas',
   /** Rota com parâmetro: /app/dividas/:id */
   debtDetail: (id: number | string) => `/app/dividas/${id}`,
+  debtNew: '/app/dividas/nova',
+  debtEdit: (id: number | string) => `/app/dividas/${id}/editar`,
   plan: '/app/plano',
   learn: '/app/aprender',
 } as const

@@ -23,7 +23,13 @@ export interface Debt {
   status: DebtStatus
 }
 
-export type DebtEventType = 'PAGAMENTO' | 'CADASTRO'
+/**
+ * Corpo do POST /debts e do PUT /debts/{id}: o que a pessoa preenche no formulário.
+ * `marketRate` e `status` não entram: quem calcula é a API, a partir do tipo e da taxa.
+ */
+export type DebtInput = Omit<Debt, 'id' | 'marketRate' | 'status'>
+
+export type DebtEventType ='PAGAMENTO' | 'CADASTRO'
 
 /** Item do histórico da dívida */
 export interface DebtEvent {
