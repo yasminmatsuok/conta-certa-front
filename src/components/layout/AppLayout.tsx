@@ -1,15 +1,28 @@
-import { Outlet } from 'react-router-dom'
-import { getSession } from '../../services/session'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { PATHS } from '../../routes/paths'
+import { clearSession, getSession } from '../../services/session'
 import { BottomNav } from './BottomNav'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
 
 /** Estrutura comum a todas as páginas: cabeçalho, menu e área de conteúdo */
 export function AppLayout() {
+  const navigate = useNavigate()
+
+  // "Sair": apaga a sessão guardada no navegador e volta para a tela de entrar
+  function handleLogout() {
+    clearSession()
+    navigate(PATHS.login)
+  }
+
   return (
     <div className="flex min-h-dvh flex-col">
       {/* Nome de quem entrou pela tela de login; "Visitante" se abrir o app direto */}
-      <Header userName={getSession()?.userName ?? 'Visitante'} hasNotifications />
+      <Header
+        userName={getSession()?.userName ?? 'Visitante'}
+        hasNotifications
+        onLogout={handleLogout}
+      />
 
       <div className="flex flex-1">
         <Sidebar />
