@@ -2,7 +2,7 @@ import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { MemberAvatar } from '../components/site/MemberAvatar'
 import { MemberLinks } from '../components/site/MemberLinks'
-import { Card, EmptyState } from '../components/ui'
+import { Card } from '../components/ui'
 import { buttonClasses } from '../components/ui/buttonStyles'
 import { MEMBERS } from '../data/members'
 import { PATHS } from '../routes/paths'
@@ -42,15 +42,13 @@ export function MemberDetailPage() {
           </Card>
         ) : (
           // RM que não existe em src/data/members.ts
-          <EmptyState
-            title="Integrante não encontrado"
-            description={`Não existe integrante com o RM "${rm}".`}
-            action={
-              <Link to={PATHS.members} className={buttonClasses({ size: 'sm' })}>
-                Ver todos os integrantes
-              </Link>
-            }
-          />
+          <Card padding="lg" className="text-center">
+            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Integrante não encontrado</h1>
+            <p className="mt-3 text-muted">Não existe integrante com o RM "{rm}".</p>
+            <Link to={PATHS.members} className={buttonClasses({ className: 'mt-6' })}>
+              Voltar para a lista de integrantes
+            </Link>
+          </Card>
         )}
       </div>
     </div>
