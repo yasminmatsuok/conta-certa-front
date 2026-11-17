@@ -14,10 +14,10 @@ export const MEMBERS: Member[] = [
   {
     rm: '570850', 
     name: 'Maria Vitória Cândida Carvalho',
-    className: 'Turma', // PREENCHER
-    photo: null, // PREENCHER
-    github: '', // PREENCHER
-    linkedin: '', // PREENCHER
+    className: '1TDSPI',
+    photo: null, 
+    github: '', 
+    linkedin: '',
   },
   {
     rm: '000002', // PREENCHER
