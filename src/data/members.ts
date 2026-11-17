@@ -15,7 +15,7 @@ export const MEMBERS: Member[] = [
     rm: '570850', 
     name: 'Maria Vitória Cândida Carvalho',
     className: '1TDSPI',
-    photo: null, 
+    photo: '/mavi.jpeg', 
     github: 'https://github.com/mariav1110', 
     linkedin: 'https://www.linkedin.com/in/maria-vitoriac?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
