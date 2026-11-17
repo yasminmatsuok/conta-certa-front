@@ -122,7 +122,7 @@ function DashboardContent({ dashboard }: DashboardContentProps) {
                 </h2>
                 <p className="text-sm text-muted">
                   {forecastEnd
-                    ? `Previsão para ${formatDayMonth(forecastEnd.date)} feita pelo modelo de IA`
+                    ? `Previsão para ${formatDayMonth(forecastEnd.date)} pela média dos últimos 90 dias`
                     : 'Ainda sem previsão para este mês'}
                 </p>
               </div>

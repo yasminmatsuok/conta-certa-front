@@ -2,7 +2,10 @@
  * Cliente HTTP do app, feito só com a Fetch API (sem Axios).
  * A URL base vem de VITE_API_URL, definida no arquivo .env (veja .env.example).
  */
-import { getSession } from './session'
+import { clearSession, getSession } from './session'
+
+/** Endereço da tela de entrar (repetido aqui para o service não depender das rotas do React) */
+const LOGIN_PATH = '/entrar'
 
 const BASE_URL =(import.meta.env.VITE_API_URL ?? 'http://localhost:8080').replace(/\/+$/, '')
 
@@ -54,8 +57,9 @@ async function request<TResponse>(
   { body, signal }: RequestOptions = {},
 ): Promise<TResponse> {
   let response: Response
-  // Depois do login, o token vai em todas as requisições
-  const token = getSession()?.token
+  // Depois do login, o token vai em todas as requisições, menos nas de login e cadastro:
+  // ali um 401 significa "senha errada", não "sessão vencida".
+  const token = path.startsWith('/auth/') ? undefined : getSession()?.token
 
   try {
     response = await fetch(`${BASE_URL}${path}`, {
@@ -71,6 +75,13 @@ async function request<TResponse>(
   } catch (error) {
     if (isAbortError(error)) throw error
     throw new ApiError(0, 'Não foi possível conectar à API. Verifique se ela está no ar.')
+  }
+
+  // Token vencido ou inválido (a API responde 401): apaga a sessão e volta para a tela de entrar.
+  // Só quando havia token: um 401 do próprio login ("senha errada") aparece no formulário normalmente.
+  if (response.status === 401 && token) {
+    clearSession()
+    window.location.assign(`${LOGIN_PATH}?sessao=expirada`)
   }
 
   if (!response.ok) {

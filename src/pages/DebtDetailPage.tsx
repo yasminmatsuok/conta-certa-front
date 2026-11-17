@@ -1,6 +1,9 @@
 import { Info, RefreshCw, Star, Target, TriangleAlert } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { DebtPaymentForm } from '../components/debts/DebtPaymentForm'
+import { DebtProjectionCard } from '../components/debts/DebtProjectionCard'
+import { RenegotiationCard } from '../components/debts/RenegotiationCard'
 import { PageHeader } from '../components/layout/PageHeader'
 import { Button, Card, ErrorState, FormMessage, LoadingState, ProgressBar } from '../components/ui'
 import { buttonClasses } from '../components/ui/buttonStyles'
@@ -20,7 +23,7 @@ export function DebtDetailPage() {
   // Rota com parâmetro: /app/dividas/:id
   const { id = '' } = useParams<{ id: string }>()
   const load = useCallback((signal: AbortSignal) => getDebt(id, signal), [id])
-  const { state, reload } = useAsync(load)
+  const { state, reload, setData } = useAsync(load)
 
   if (state.status === 'loading') {
     return <LoadingState label="Carregando dívida..." />
@@ -35,14 +38,16 @@ export function DebtDetailPage() {
     )
   }
 
-  return <DebtDetailContent debt={state.data} />
+  return <DebtDetailContent debt={state.data} onPaid={setData} />
 }
 
 interface DebtDetailContentProps {
   debt: DebtDetail
+  /** Troca a dívida na tela pela versão devolvida depois de um pagamento */
+  onPaid: (debt: DebtDetail) => void
 }
 
-function DebtDetailContent({ debt }: DebtDetailContentProps) {
+function DebtDetailContent({ debt, onPaid }: DebtDetailContentProps) {
   const navigate = useNavigate()
   const location = useLocation()
   // "Dívida cadastrada!" / "Dívida atualizada!", enviado pelo formulário ao navegar para cá
@@ -166,7 +171,14 @@ function DebtDetailContent({ debt }: DebtDetailContentProps) {
               </div>
             </Card>
           )}
+
+          <DebtProjectionCard debtId={debt.id} balance={debt.balance} />
+          {/* key com o saldo: depois de um pagamento a simulação antiga some (ela usava o saldo velho) */}
+          <RenegotiationCard key={debt.balance} debtId={debt.id} />
         </div>
+
+        <div className="space-y-5">
+        <DebtPaymentForm debt={debt} onPaid={onPaid} />
 
         <Card className="space-y-4">
           <h2 className="text-xl font-bold">O que fazer agora</h2>
@@ -213,6 +225,7 @@ function DebtDetailContent({ debt }: DebtDetailContentProps) {
             {deleting ? 'Excluindo...' : 'Excluir dívida'}
           </Button>
         </Card>
+        </div>
       </div>
     </>
   )

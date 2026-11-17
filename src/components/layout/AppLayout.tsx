@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { PATHS } from '../../routes/paths'
 import { clearSession, getSession } from '../../services/session'
 import { BottomNav } from './BottomNav'
@@ -8,6 +8,14 @@ import { Sidebar } from './Sidebar'
 /** Estrutura comum a todas as páginas: cabeçalho, menu e área de conteúdo */
 export function AppLayout() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const session = getSession()
+
+  // O app só abre com login: a API recusa (401) qualquer chamada sem token.
+  // Guardamos o endereço pedido para voltar a ele depois de entrar.
+  if (session === null) {
+    return <Navigate to={PATHS.login} replace state={{ from: location.pathname + location.search }} />
+  }
 
   // "Sair": apaga a sessão guardada no navegador e volta para a tela de entrar
   function handleLogout() {
@@ -17,8 +25,7 @@ export function AppLayout() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      {/* Nome de quem entrou pela tela de login; "Visitante" se abrir o app direto */}
-      <Header userName={getSession()?.userName ?? 'Visitante'} onLogout={handleLogout} />
+      <Header userName={session.userName} onLogout={handleLogout} />
 
       <div className="flex flex-1">
         <Sidebar />

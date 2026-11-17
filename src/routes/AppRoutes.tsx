@@ -3,6 +3,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AppLayout } from '../components/layout/AppLayout'
 import { SiteLayout } from '../components/site/SiteLayout'
 import { AboutPage } from '../pages/AboutPage'
+import { AccountsPage } from '../pages/AccountsPage'
+import { HealthPage } from '../pages/HealthPage'
+import { MorePage } from '../pages/MorePage'
+import { RegisterPage } from '../pages/RegisterPage'
+import { SimulatorsPage } from '../pages/SimulatorsPage'
+import { VaultsPage } from '../pages/VaultsPage'
 import { ContactPage } from '../pages/ContactPage'
 import { DebtDetailPage } from '../pages/DebtDetailPage'
 import { DebtEditPage, DebtNewPage } from '../pages/DebtFormPage'
@@ -38,6 +44,7 @@ export function AppRoutes() {
           <Route path={PATHS.faq} element={page('Perguntas frequentes', <FaqPage />)} />
           <Route path={PATHS.contact} element={page('Contato', <ContactPage />)} />
           <Route path={PATHS.login} element={page('Entrar', <LoginPage />)} />
+          <Route path={PATHS.register} element={page('Criar conta', <RegisterPage />)} />
           {/* Qualquer endereço desconhecido cai na página 404 */}
           <Route path="*" element={page('Página não encontrada', <NotFoundPage />)} />
         </Route>
@@ -52,6 +59,11 @@ export function AppRoutes() {
           <Route path="dividas/:id/editar" element={page('Editar dívida', <DebtEditPage />)} />
           <Route path="plano" element={page('Meu plano', <PlanPage />)} />
           <Route path="aprender" element={page('Aprender', <LearnPage />)} />
+          <Route path="contas" element={page('Contas', <AccountsPage />)} />
+          <Route path="cofres" element={page('Cofres', <VaultsPage />)} />
+          <Route path="saude" element={page('Saúde financeira', <HealthPage />)} />
+          <Route path="simuladores" element={page('Simuladores', <SimulatorsPage />)} />
+          <Route path="mais" element={page('Mais', <MorePage />)} />
           <Route
             path="*"
             element={page(

@@ -13,8 +13,8 @@ interfaces em `src/types`; as chamadas estão em `src/services`. Se a API usar o
 - **Dinheiro:** número em reais (ex.: `312.40`), não texto.
 - **Taxas de juros:** número em % ao mês (`14.5` significa 14,5% a.m.).
 - **IDs:** números.
-- **Autenticação:** depois do login, o front envia `Authorization: Bearer <token>` em todas as requisições. É por esse token que a API sabe de quem são os dados; nenhum endpoint recebe id de usuário.
-- **Erros:** qualquer status fora de 2xx é tratado como erro. Se o corpo tiver um campo `message` (texto), é ele que aparece na tela, ex.: `{ "message": "E-mail ou senha incorretos." }`.
+- **Autenticação:** depois do login, o front envia `Authorization: Bearer <token>` em todas as requisições. É por esse token que a API sabe de quem são os dados; as rotas em inglês não recebem id de usuário. O token vale 12 horas. Sem token (ou com token vencido) a API responde **401** e o front volta para a tela de entrar. Rotas públicas (sem token): `/auth/login`, `/auth/cadastro`, `/contact`, `/bancos`, `/categorias`, `/indicadores` e `/health`.
+- **Erros:** qualquer status fora de 2xx é tratado como erro. Se o corpo tiver um campo `message` (texto), é ele que aparece na tela, ex.: `{ "message": "E-mail ou senha incorretos." }`. Além de 400/401/404/409, a API pode responder **403** (dado de outro usuário nas rotas em português) e **429** (muitas mensagens de contato em pouco tempo).
 - **CORS:** a API precisa liberar a origem do front (`http://localhost:5173` em desenvolvimento), os métodos `GET, POST, PUT, DELETE` e os cabeçalhos `Authorization` e `Content-Type`.
 
 ## Resumo
@@ -31,6 +31,7 @@ interfaces em `src/types`; as chamadas estão em `src/services`. Se a API usar o
 | GET | `/debts/{id}` | Detalhe da dívida (`/app/dividas/:id`) | Uma dívida com histórico |
 | PUT | `/debts/{id}` | Editar dívida (`/app/dividas/:id/editar`) | Atualizar dívida |
 | DELETE | `/debts/{id}` | Detalhe da dívida | Excluir dívida |
+| POST | `/debts/{id}/payments` | Detalhe da dívida | Registrar pagamento |
 | GET | `/plan` | Meu plano (`/app/plano`) | Plano atual |
 | PUT | `/plan` | Meu plano | Salvar valor mensal e método |
 | GET | `/learning/tracks` | Aprender (`/app/aprender`) | Listar trilhas e lições |
@@ -77,6 +78,7 @@ Resposta (200):
 | --- | --- | --- |
 | `token` | string | Volta em `Authorization: Bearer <token>` nas próximas requisições |
 | `userName` | string | Nome da pessoa; vira as iniciais do avatar |
+| `id` | número | Id do usuário; monta as rotas em português `/usuarios/{id}/...` (ver o fim deste arquivo) |
 
 Credenciais erradas: responder com erro (ex.: 401) e `message`.
 
@@ -314,11 +316,50 @@ Resposta (200): a trilha atualizada, no mesmo formato de um item do `GET /learni
 
 ---
 
+### `POST /debts/{id}/payments`
+
+Corpo: `{ "amount": número, "accountId"?: número, "date"?: "AAAA-MM-DD" }`. Com `accountId`, o valor
+sai do saldo da conta e vira uma saída "Pagamento de dívidas" nas transações. Sem `date`, vale hoje.
+Resposta (200): a dívida atualizada, no formato do `GET /debts/{id}` (novo saldo e histórico).
+Valor maior que o saldo da dívida ou da conta: 409 com `message`.
+
+---
+
+## Rotas em português (telas novas)
+
+As telas Criar conta, Contas, Cofres, Saúde financeira, Simuladores e os blocos novos do detalhe
+da dívida usam as rotas que a API Java já tinha. Os campos chegam em português, exatamente como
+estão nos tipos `src/types/account.ts`, `vault.ts`, `analysis.ts`, `indicator.ts` e `user.ts`.
+`{id}` do usuário é o `id` devolvido pelo login; a API confere se ele é o mesmo do token (senão, 403).
+
+| Método | Caminho | Tela |
+| --- | --- | --- |
+| POST | `/auth/cadastro` | Criar conta (`/cadastro`) |
+| GET, PUT | `/usuarios/{id}` | Saúde financeira (renda e horas de trabalho) |
+| GET | `/bancos` | Contas (lista de bancos) |
+| GET, POST | `/usuarios/{id}/contas` | Contas (listar e conectar banco) |
+| DELETE | `/contas/{id}` | Contas (desconectar) |
+| GET, POST | `/contas/{id}/cartoes` | Contas (cartões) |
+| DELETE | `/cartoes/{id}` | Contas |
+| POST | `/contas/{id}/transacoes/simular-compra` | Contas (simular compra) |
+| GET, POST | `/usuarios/{id}/cofres` | Cofres |
+| DELETE | `/cofres/{id}` | Cofres |
+| POST | `/cofres/{id}/depositos` e `/cofres/{id}/resgates` | Cofres |
+| GET | `/usuarios/{id}/situacao` | Saúde financeira (nota) |
+| GET | `/usuarios/{id}/consultoria` | Saúde financeira |
+| GET | `/usuarios/{id}/resumo-mensal?mes=AAAA-MM` | Saúde financeira |
+| GET | `/usuarios/{id}/custo-em-horas?valor=150` | Saúde financeira |
+| GET | `/usuarios/{id}/pagar-ou-investir` | Simuladores |
+| GET | `/indicadores` | Simuladores (Selic, IPCA, dólar) |
+| POST | `/investimentos/tesouro-selic/simular` | Simuladores |
+| GET | `/dividas/{id}/projecao?meses=12` | Detalhe da dívida |
+| POST | `/dividas/{id}/renegociacao/simular` | Detalhe da dívida |
+
+---
+
 ## Ainda sem endpoint
 
-Estas ações aparecem no protótipo, mas não têm tela desenhada, e nenhum endpoint é chamado
-(os dois primeiros botões estão desabilitados no front):
-
-- Criar conta ("Criar conta grátis")
-- Recuperar senha ("Esqueci minha senha")
+- Recuperar senha ("Esqueci minha senha": botão desabilitado)
 - Notificações: o sino do cabeçalho abre um painel que hoje mostra sempre "Nenhuma notificação"
+- "Repetir todo mês" nas transações: a API grava e devolve a marcação, mas ainda não cria o
+  lançamento automaticamente nos meses seguintes

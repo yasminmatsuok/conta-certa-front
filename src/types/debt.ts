@@ -46,6 +46,15 @@ export interface RelatedTrack {
   title: string
 }
 
+/** Corpo do POST /debts/{id}/payments */
+export interface PaymentInput {
+  amount: number
+  /** Opcional: conta de onde sai o dinheiro (abate o saldo e aparece no extrato) */
+  accountId?: number
+  /** Opcional, "AAAA-MM-DD"; sem ela vale hoje */
+  date?: string
+}
+
 /** Resposta do GET /debts/{id} */
 export interface DebtDetail extends Debt {
   history: DebtEvent[]

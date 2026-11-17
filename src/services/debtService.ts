@@ -1,4 +1,4 @@
-import type { Debt, DebtDetail, DebtInput } from '../types/debt'
+import type { Debt, DebtDetail, DebtInput, PaymentInput } from '../types/debt'
 import { api } from './api'
 
 /** GET /debts — dívidas ativas */
@@ -19,6 +19,14 @@ export function createDebt(debt: DebtInput): Promise<Debt> {
 /** PUT /debts/{id} — devolve a dívida atualizada */
 export function updateDebt(id: number | string, debt: DebtInput): Promise<Debt> {
   return api.put<Debt>(`/debts/${encodeURIComponent(id)}`, debt)
+}
+
+/**
+ * POST /debts/{id}/payments — registra um pagamento.
+ * Com a conta, o valor sai do saldo dela e aparece no extrato. Devolve a dívida já atualizada.
+ */
+export function registerPayment(id: number, payment: PaymentInput): Promise<DebtDetail> {
+  return api.post<DebtDetail>(`/debts/${encodeURIComponent(id)}/payments`, payment)
 }
 
 /** DELETE /debts/{id} */

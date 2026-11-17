@@ -1,3 +1,4 @@
+import { TriangleAlert } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
@@ -73,10 +74,17 @@ function PlanOverview({ plan }: PlanOverviewProps) {
     <div className="space-y-5 xl:col-span-2">
       <Card tone="brand" className="grid items-center gap-5 md:grid-cols-[auto_1fr] md:gap-10">
         <div>
-          <p className="text-sm text-muted">Você fica livre das dívidas em</p>
-          <p className="text-4xl font-bold tracking-tight text-brand">
-            {formatMonthLong(plan.debtFreeDate)}
-          </p>
+          {plan.debtFreeDate ? (
+            <>
+              <p className="text-sm text-muted">Você fica livre das dívidas em</p>
+              <p className="text-4xl font-bold tracking-tight text-brand">{formatMonthLong(plan.debtFreeDate)}</p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-muted">Com esse valor por mês</p>
+              <p className="text-2xl font-bold tracking-tight">as dívidas não terminam</p>
+            </>
+          )}
         </div>
         <div>
           <div className="mb-2 flex justify-between">
@@ -89,6 +97,14 @@ function PlanOverview({ plan }: PlanOverviewProps) {
           </p>
         </div>
       </Card>
+
+      {/* Ex.: o valor mensal não cobre a soma das parcelas, ou nem os juros */}
+      {plan.warning && (
+        <Card tone="white" className="flex items-start gap-4">
+          <TriangleAlert size={28} className="mt-0.5 shrink-0" aria-hidden="true" />
+          <p className="text-sm">{plan.warning}</p>
+        </Card>
+      )}
 
       <Card>
         <h2 className="text-xl font-bold">Ordem de pagamento</h2>
@@ -116,7 +132,9 @@ function PlanOverview({ plan }: PlanOverviewProps) {
                     <Link to={PATHS.debtDetail(step.debtId)} className="font-bold hover:underline">
                       {step.debtName}
                     </Link>
-                    <span className="text-sm text-muted">até {formatMonthShort(step.payoffDate)}</span>
+                    <span className="text-sm text-muted">
+                      {step.payoffDate ? `até ${formatMonthShort(step.payoffDate)}` : 'não acaba com esse valor'}
+                    </span>
                   </div>
                   <ProgressBar
                     size="sm"
@@ -217,7 +235,9 @@ function PlanForm({ plan, onSaved }: PlanFormProps) {
                   </span>
                   <span className="mt-1 block text-sm text-muted">{text.description}</span>
                   <span className="mt-2 flex flex-wrap justify-between gap-x-4 text-sm">
-                    <span className="text-muted">Livre em {formatMonthShort(option.debtFreeDate)}</span>
+                    <span className="text-muted">
+                      {option.debtFreeDate ? `Livre em ${formatMonthShort(option.debtFreeDate)}` : 'Não quita em 30 anos'}
+                    </span>
                     <span className="font-bold">Juros: {formatCurrency(option.totalInterest)}</span>
                   </span>
                 </label>

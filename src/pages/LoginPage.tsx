@@ -1,11 +1,13 @@
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Button, Card, FormMessage, Input } from '../components/ui'
+import { buttonClasses } from '../components/ui/buttonStyles'
 import { PATHS } from '../routes/paths'
 import { getErrorMessage } from '../services/api'
 import { login } from '../services/authService'
+import { getSession } from '../services/session'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -21,6 +23,16 @@ type SubmitState =
 /** Tela de entrar: fica dentro do site público, com o mesmo cabeçalho e rodapé */
 export function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
+  const sessionExpired = searchParams.get('sessao') === 'expirada'
+  const navigationState: unknown = location.state
+  const state: object = typeof navigationState === 'object' && navigationState !== null ? navigationState : {}
+  // Só volta para telas do próprio app (nunca para um endereço qualquer vindo de fora)
+  const from = 'from' in state && typeof state.from === 'string' ? state.from : ''
+  const redirectTo = from === PATHS.home || from.startsWith(`${PATHS.home}/`) ? from : PATHS.home
+  // Veio do cadastro: a conta foi criada, mas o login automático não deu certo
+  const justCreated = 'created' in state && state.created === true
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -45,13 +57,19 @@ export function LoginPage() {
     try {
       await login({ email: email.trim(), password })
       setSubmit({ status: 'success' })
-      navigate(PATHS.home)
+      // Volta para a tela que a pessoa tentou abrir antes de entrar (ver AppLayout)
+      navigate(redirectTo, { replace: true })
     } catch (error) {
       setSubmit({ status: 'error', message: getErrorMessage(error) })
     }
   }
 
   const busy = submit.status === 'saving' || submit.status === 'success'
+
+  // Quem já está logado vai direto para o app (enquanto entra, a navegação do submit cuida disso)
+  if (getSession() !== null && submit.status === 'idle') {
+    return <Navigate to={redirectTo} replace />
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-6xl justify-center px-4 py-12 md:px-8 md:py-20">
@@ -61,6 +79,14 @@ export function LoginPage() {
             <h1 className="text-2xl font-bold">Entrar</h1>
             <p className="mt-1 text-muted">Que bom ver você de novo!</p>
           </div>
+
+          {/* A API recusou o token guardado (vencido ou inválido): ver services/api.ts */}
+          {sessionExpired && submit.status === 'idle' && (
+            <FormMessage kind="error">Sua sessão terminou. Entre de novo para continuar.</FormMessage>
+          )}
+          {justCreated && submit.status === 'idle' && (
+            <FormMessage kind="success">Conta criada! Entre com seu e-mail e senha.</FormMessage>
+          )}
 
           <Input
             label="E-mail"
@@ -116,10 +142,9 @@ export function LoginPage() {
 
           <p className="text-center text-sm text-subtle">ou</p>
 
-          {/* O protótipo ainda não tem a tela de criar conta */}
-          <Button variant="outline" size="lg" fullWidth disabled title="Cadastro ainda não disponível">
+          <Link to={PATHS.register} className={buttonClasses({ variant: 'outline', size: 'lg', fullWidth: true })}>
             Criar conta grátis
-          </Button>
+          </Link>
         </form>
       </Card>
     </div>

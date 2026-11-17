@@ -17,7 +17,7 @@ interface StoredResult<TData> {
 
 interface UseAsyncResult<TData> {
   state: AsyncState<TData>
-  /** Busca de novo (botão "Tentar de novo") */
+  /** Busca de novo (botão "Tentar de novo", ou depois de salvar algo) */
   reload: () => void
   /** Troca os dados na tela sem buscar de novo (depois de salvar algo) */
   setData: (data: TData) => void
@@ -36,7 +36,10 @@ export function useAsync<TData>(
   useEffect(() => {
     const controller = new AbortController()
 
-    load(controller.signal)
+    // Promise.resolve().then(...) faz um erro lançado logo no começo do load (ex.: sessão
+    // que sumiu) virar estado de erro na tela, em vez de derrubar a página inteira.
+    Promise.resolve()
+      .then(() => load(controller.signal))
       .then((data) => {
         if (!controller.signal.aborted) {
           setResult({ load, attempt, state: { status: 'success', data } })
@@ -52,9 +55,12 @@ export function useAsync<TData>(
     return () => controller.abort()
   }, [load, attempt])
 
-  // Enquanto o resultado guardado não for da busca atual, a tela está carregando
+  // Enquanto o resultado guardado não for da busca atual, a tela está carregando.
+  // Exceção: num reload (mesma busca, nova tentativa) os dados antigos continuam na tela
+  // até os novos chegarem, para a lista não piscar nem perder mensagens já mostradas.
   const isCurrent = result !== null && result.load === load && result.attempt === attempt
-  const state: AsyncState<TData> = isCurrent ? result.state : { status: 'loading' }
+  const isRefreshing = result !== null && result.load === load && result.state.status === 'success'
+  const state: AsyncState<TData> = isCurrent || isRefreshing ? result.state : { status: 'loading' }
 
   const reload = useCallback(() => setAttempt((current) => current + 1), [])
   const setData = useCallback(

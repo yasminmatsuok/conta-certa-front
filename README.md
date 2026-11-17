@@ -45,6 +45,7 @@ Ajudar o cidadão a entender para onde vai o seu dinheiro e a deixar de pagar ju
 | `/faq` | Perguntas frequentes |
 | `/contato` | Formulário de contato |
 | `/entrar` | Login |
+| `/cadastro` | Criar conta |
 
 **Solução**
 
@@ -58,6 +59,13 @@ Ajudar o cidadão a entender para onde vai o seu dinheiro e a deixar de pagar ju
 | `/app/dividas/:id/editar` | Edição de dívida |
 | `/app/plano` | Plano de pagamento |
 | `/app/aprender` | Trilhas de aprendizado |
+| `/app/contas` | Bancos conectados, cartões e "simular compra" |
+| `/app/cofres` | Cofres (metas de economia), depósitos e resgates |
+| `/app/saude` | Nota de saúde financeira, consultoria, resumo do mês e custo em horas |
+| `/app/simuladores` | Indicadores do Banco Central, "pagar ou investir" e Tesouro Selic |
+| `/app/mais` | Atalho para as telas acima no mobile |
+
+As telas do app (`/app/...`) exigem login: sem sessão, o site leva para `/entrar`.
 
 ## Estrutura de pastas
 

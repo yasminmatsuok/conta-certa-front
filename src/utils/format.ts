@@ -21,6 +21,17 @@ export function formatDayMonth(isoDate: string): string {
   return `${day.slice(0, 2)}/${month}`
 }
 
+/** "2026-11-16" (ou "2026-11-16T10:00:00") -> "16/11/2026" */
+export function formatDate(isoDate: string): string {
+  const [year = '', month = '', day = ''] = isoDate.slice(0, 10).split('-')
+  return `${day}/${month}/${year}`
+}
+
+/** 1250.9 -> "1250,90": valor inicial de um campo de dinheiro editável */
+export function toMoneyInput(value: number): string {
+  return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false })
+}
+
 function monthToDate(isoMonth: string): Date {
   const [year, month] = isoMonth.split('-').map(Number)
   return new Date(year ?? 0, (month ?? 1) - 1, 1)
@@ -78,7 +89,13 @@ export function listRecentMonths(count: number): string[] {
 export function parseMoney(text: string): number | null {
   const cleaned = text.replace(/R\$/gi, '').replace(/\s/g, '')
   if (cleaned === '') return null
-  const normalized = cleaned.includes(',') ? cleaned.replace(/\./g, '').replace(',', '.') : cleaned
+  // "1.250,90" -> vírgula é decimal; "1.500" (sem vírgula, pontos de 3 em 3) -> milhar; "86.9" -> decimal
+  const thousandsOnly = /^\d{1,3}(\.\d{3})+$/.test(cleaned)
+  const normalized = cleaned.includes(',')
+    ? cleaned.replace(/\./g, '').replace(',', '.')
+    : thousandsOnly
+      ? cleaned.replace(/\./g, '')
+      : cleaned
   if (!/^\d+(\.\d+)?$/.test(normalized)) return null
   return Number(normalized)
 }
