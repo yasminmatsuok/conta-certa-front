@@ -12,8 +12,8 @@ import type { Member } from '../types/member'
  */
 export const MEMBERS: Member[] = [
   {
-    rm: '000001', // PREENCHER
-    name: 'Nome do Integrante 1', // PREENCHER
+    rm: '570850', 
+    name: 'Maria Vitória Cândida Carvalho',
     className: 'Turma', // PREENCHER
     photo: null, // PREENCHER
     github: '', // PREENCHER
