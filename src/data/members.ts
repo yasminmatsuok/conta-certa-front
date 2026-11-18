@@ -33,6 +33,6 @@ export const MEMBERS: Member[] = [
     className: '1TDSPI',
     photo: '/integrantes/yasmin.jpg',
     github: 'https://github.com/yasminmatsuok',
-    linkedin: '', // PREENCHER
+    linkedin: 'https://www.linkedin.com/in/yasmin-matsuok/?locale=pt',
   },
 ]
