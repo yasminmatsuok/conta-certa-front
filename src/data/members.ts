@@ -31,7 +31,7 @@ export const MEMBERS: Member[] = [
     rm: '573083',
     name: 'Yasmin Matsuok',
     className: '1TDSPI',
-    photo: null, // PREENCHER
+    photo: '/integrantes/yasmin.jpg',
     github: 'https://github.com/yasminmatsuok',
     linkedin: '', // PREENCHER
   },
