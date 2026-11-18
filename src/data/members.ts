@@ -25,7 +25,7 @@ export const MEMBERS: Member[] = [
     className: '1TDSPY',
     photo: '/integrantes/vinicius.jpg',
     github: 'https://github.com/vinisl2510-sudo',
-    linkedin: '', // PREENCHER
+    linkedin: 'https://www.linkedin.com/in/vin%C3%ADcius-soares-loureiro-9bb96b34b/',
   },
   {
     rm: '000003', // PREENCHER
