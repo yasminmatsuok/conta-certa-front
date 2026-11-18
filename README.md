@@ -119,7 +119,7 @@ Testada nas resoluções de mobile (390 × 844), tablet (768 × 1024) e desktop 
 | Nome | RM | Turma | GitHub |
 | --- | --- | --- | --- |
 | Yasmin de Oliveira Matsuok | 573083 |1TDSPI | [@yasminmatsuok](https://github.com/yasminmatsuok) |
-| Vinicius Soares Loureiro  | [PREENCHER] | 1TDSPY | [PREENCHER] |
+| Vinicius Soares Loureiro | 573351 | 1TDSPY | [@vinisl2510-sudo](https://github.com/vinisl2510-sudo) |
 | Maria Vitória Cândida Carvalho| 570850 | 1TDSPI | [PREENCHER] |
 
 ## Contato

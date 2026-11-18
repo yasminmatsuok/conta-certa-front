@@ -20,11 +20,11 @@ export const MEMBERS: Member[] = [
     linkedin: 'https://www.linkedin.com/in/maria-vitoriac?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
   {
-    rm: '000002', // PREENCHER
-    name: 'Nome do Integrante 2', // PREENCHER
-    className: 'Turma', // PREENCHER
-    photo: null, // PREENCHER
-    github: '', // PREENCHER
+    rm: '573351',
+    name: 'Vinicius Soares Loureiro',
+    className: '1TDSPY',
+    photo: '/integrantes/vinicius.jpg',
+    github: 'https://github.com/vinisl2510-sudo',
     linkedin: '', // PREENCHER
   },
   {
