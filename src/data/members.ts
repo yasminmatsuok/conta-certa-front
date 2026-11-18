@@ -28,11 +28,11 @@ export const MEMBERS: Member[] = [
     linkedin: 'https://www.linkedin.com/in/vin%C3%ADcius-soares-loureiro-9bb96b34b/',
   },
   {
-    rm: '000003', // PREENCHER
-    name: 'Nome do Integrante 3', // PREENCHER
-    className: 'Turma', // PREENCHER
+    rm: '573083',
+    name: 'Yasmin Matsuok',
+    className: '1TDSPI',
     photo: null, // PREENCHER
-    github: '', // PREENCHER
+    github: 'https://github.com/yasminmatsuok',
     linkedin: '', // PREENCHER
   },
 ]
