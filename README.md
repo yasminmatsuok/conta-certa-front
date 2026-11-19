@@ -17,9 +17,9 @@ Ajudar o cidadão a entender para onde vai o seu dinheiro e a deixar de pagar ju
 
 | Item | Link |
 | --- | --- |
-| Site publicado (Vercel) | [conta-certa-front-mu.vercel.app](https://conta-certa-front-mu.vercel.app/) |
+| Site publicado (Vercel) | conta-certa-front-mu.vercel.app](https://conta-certa-front-mu.vercel.app/ |
 | Repositório (GitHub) | https://github.com/yasminmatsuok/conta-certa-front |
-| API Java (Render) | [PREENCHER: URL da API] |
+| API Java (Render) | https://conta-certa-api-htom.onrender.com |
 | Vídeo (YouTube, até 3 min) | [PREENCHER: link do vídeo] |
 
 ## Tecnologias
